@@ -1,0 +1,18 @@
+{
+  "name": "@hieu_le/cw721-interact",
+  "version": "1.0.0",
+  "main": "build/cli.js",
+  "bin": "build/cli.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/cli.ts"
+  },
+  "dependencies": {
+    "@cosmjs/amino": "^0.31",
+    "@cosmjs/cosmwasm-stargate": "^0.31.0",
+    "@hieu_le/cw721-contracts-sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0"
+  }
+}

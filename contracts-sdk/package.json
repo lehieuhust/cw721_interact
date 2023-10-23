@@ -1,0 +1,12 @@
+{
+  "name": "@hieu_le/cw721-contracts-sdk",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "files": [
+    "build/"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}
