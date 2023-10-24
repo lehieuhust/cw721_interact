@@ -10,7 +10,8 @@
   "dependencies": {
     "@cosmjs/amino": "^0.31",
     "@cosmjs/cosmwasm-stargate": "^0.31.0",
-    "@hieu_le/cw721-contracts-sdk": "^1.0.0"
+    "@hieu_le/cw721-contracts-sdk": "^1.0.0",
+    "@hieu_le/nftrent-contracts-sdk": "^1.0.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0"

@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
-import { CosmWasmClient, SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+import { CosmWasmClient, SigningCosmWasmClient, toBinary } from "@cosmjs/cosmwasm-stargate";
 import { stringToPath } from "@cosmjs/crypto";
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { GasPrice } from "@cosmjs/stargate";
 
 import { Cw721BaseClient, Cw721BaseQueryClient } from "@hieu_le/cw721-contracts-sdk";
+import { NftRentingClient, NftRentingQueryClient, NftRentingTypes } from "@hieu_le/nftrent-contracts-sdk";
 
 dotenv.config();
 export type UserWallet = {
@@ -56,16 +57,61 @@ export async function setupWallet(
   const { amount } = await sender.client.getBalance(sender.address, "ucmdx");
   console.log(`balance of ${sender.address} is ${amount}`);
   const cw721Contract = "comdex10a3xtmqcz2mqam9fzsjzmtyqzfr3f0gdcw9wqy4druhg0xh025pqntq9zw";
+  const cw721RentingContract = "comdex15wyp5qu0mr30986xm6kvsu5lmtjhzkz590ttygpwvfj4m65dy97qfgrv7j";
   const cw721Client = new Cw721BaseClient(
     sender.client,
     sender.address,
     cw721Contract
   );
+  const nftRentingClient = new NftRentingClient(
+    sender.client,
+    sender.address,
+    cw721RentingContract
+  );
+
+
   const cw721QueryClient = new Cw721BaseQueryClient(
     sender.client,
     cw721Contract
   );
 
+  const nftRentingQueryClient = new NftRentingQueryClient(
+    sender.client,
+    cw721RentingContract
+  );
+
+  // Lend a nft
+  // const lendNft = await cw721Client.sendNft({
+  //   contract: cw721RentingContract,
+  //   msg: toBinary({
+  //     lend_nft: {
+  //       lend_time: 60,
+  //       lend_amount: "10000",
+  //     }
+  //   }),
+  //   tokenId: 'test'
+  // });
+  // console.log({ lendNft });
+
+  // Rent a nft
+  const rentNft = await nftRentingClient.rentNft({
+    tokenId: 'test',
+    cw721Contract: cw721Contract
+  });
+  console.log({ rentNft });
+  
+  const queryLendOrder = await nftRentingQueryClient.lendOrder({
+    tokenId: 'test',
+    cw721Contract: cw721Contract
+  });
+  console.log({ queryLendOrder });
+
+  const queryRentOrder = await nftRentingQueryClient.rentOrder({
+    tokenId: 'test',
+    cw721Contract: cw721Contract
+  });
+  console.log({ queryRentOrder });
+  
   // Mint token
   // await cw721Client.mint({
   //   extension: {},
