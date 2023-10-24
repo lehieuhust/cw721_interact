@@ -81,19 +81,20 @@ export async function setupWallet(
   );
 
   // Lend a nft
-  // const lendNft = await cw721Client.sendNft({
-  //   contract: cw721RentingContract,
-  //   msg: toBinary({
-  //     lend_nft: {
-  //       lend_time: 60,
-  //       lend_amount: "10000",
-  //     }
-  //   }),
-  //   tokenId: 'test'
-  // });
-  // console.log({ lendNft });
+  const lendNft = await cw721Client.sendNft({
+    contract: cw721RentingContract,
+    msg: toBinary({
+      lend_nft: {
+        lend_time: 60,
+        lend_amount: "10000",
+      }
+    }),
+    tokenId: 'test'
+  });
+  console.log({ lendNft });
 
   // Rent a nft
+  // Note: fund must be equal lend_amount
   const rentNft = await nftRentingClient.rentNft({
     tokenId: 'test',
     cw721Contract: cw721Contract
@@ -105,6 +106,13 @@ export async function setupWallet(
       amount: "10000"
     }])
   console.log({ rentNft });
+
+  // Delist a lend nft
+  const delistNft = await nftRentingClient.delistNft({
+    tokenId: 'test',
+    cw721Contract: cw721Contract
+  })
+  console.log({ delistNft });
 
   const queryLendOrder = await nftRentingQueryClient.lendOrder({
     tokenId: 'test',
@@ -118,21 +126,15 @@ export async function setupWallet(
   });
   console.log({ queryRentOrder });
 
-  // Mint token
-  // await cw721Client.mint({
-  //   extension: {},
-  //   owner: sender.address,
-  //   tokenId: '123',
-  //   tokenUri: "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"
-  // });
-
+  const approve = await cw721QueryClient.approval({ spender: sender.address, tokenId: 'test' });
+  console.log({ approve });
   const allToken = await cw721QueryClient.allTokens({ limit: 100 });
   console.log({ allToken });
 
   const tokenInfo = await cw721QueryClient.nftInfo({ tokenId: 'test' });
   console.log({ tokenInfo });
 
-  const walletTokens = await cw721QueryClient.tokens({ owner: "comdex12zyu8w93h0q2lcnt50g3fn0w3yqnhy4fcp6ucx" })
+  const walletTokens = await cw721QueryClient.tokens({ owner: sender.address })
   console.log({ walletTokens });
 
 })();
