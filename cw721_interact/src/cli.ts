@@ -97,9 +97,15 @@ export async function setupWallet(
   const rentNft = await nftRentingClient.rentNft({
     tokenId: 'test',
     cw721Contract: cw721Contract
-  });
+  },
+    'auto',
+    '',
+    [{
+      denom: "ucmdx",
+      amount: "10000"
+    }])
   console.log({ rentNft });
-  
+
   const queryLendOrder = await nftRentingQueryClient.lendOrder({
     tokenId: 'test',
     cw721Contract: cw721Contract
@@ -108,10 +114,10 @@ export async function setupWallet(
 
   const queryRentOrder = await nftRentingQueryClient.rentOrder({
     tokenId: 'test',
-    cw721Contract: cw721Contract
+    cw721Contract: cw721Contract,
   });
   console.log({ queryRentOrder });
-  
+
   // Mint token
   // await cw721Client.mint({
   //   extension: {},
@@ -119,14 +125,14 @@ export async function setupWallet(
   //   tokenId: '123',
   //   tokenUri: "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"
   // });
-  
+
   const allToken = await cw721QueryClient.allTokens({ limit: 100 });
   console.log({ allToken });
 
   const tokenInfo = await cw721QueryClient.nftInfo({ tokenId: 'test' });
   console.log({ tokenInfo });
-  
-  const walletTokens = await cw721QueryClient.tokens({ owner: "comdex12zyu8w93h0q2lcnt50g3fn0w3yqnhy4fcp6ucx"})
+
+  const walletTokens = await cw721QueryClient.tokens({ owner: "comdex12zyu8w93h0q2lcnt50g3fn0w3yqnhy4fcp6ucx" })
   console.log({ walletTokens });
-  
+
 })();
